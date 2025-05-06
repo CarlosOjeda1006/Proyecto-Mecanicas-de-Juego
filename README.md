@@ -1,1 +1,1 @@
-# Proyecto-Mec-nica-de-Juegos
+# Proyecto-Mecanica-de-Juegos
