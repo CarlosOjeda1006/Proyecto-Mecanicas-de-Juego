@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class AdvancedSpawner : MonoBehaviour
 {
+    //Diddier estuvo Aqui
     public GameObject[] objectsToSpawn;
     public BoxCollider spawnArea;
     public float spawnInterval = 2f;
