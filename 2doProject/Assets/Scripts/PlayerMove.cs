@@ -154,16 +154,15 @@ public class PlayerMove : MonoBehaviour
     {
         if (activeGun.currentAmmunition > 0)
         {
-            activeGun.currentAmmunition--;
+            activeGun.ConsumeAmmo();
 
             Instantiate(activeGun.bullet, firePoint.position, firePoint.rotation);
 
             activeGun.fireCounter = activeGun.fireRate;
 
-            UI.instance.ammunitionText.text = "" + activeGun.currentAmmunition;
-
             StartCoroutine(WaitAndSetActiveFalse());
         }
+
     }
 
     IEnumerator WaitAndSetActiveFalse()
