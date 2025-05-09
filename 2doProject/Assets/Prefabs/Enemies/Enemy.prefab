@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58ef17821607434da26e378025def8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoPickUp: {fileID: 5581649590539700213, guid: ce5f0214b0c8ce748a68c0eaa0d27204, type: 3}
   currentHealth: 30
 --- !u!114 &8039129394757613391
 MonoBehaviour:
