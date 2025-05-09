@@ -20,6 +20,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0 )
         {
+            EnemyProgressManager.instance.RegisterKill();
             DeathPos = transform.position;
             Instantiate(ammoPickUp, DeathPos, Quaternion.identity);
             // Destroy the enemy object
