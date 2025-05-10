@@ -5835,7 +5835,7 @@ Transform:
   m_GameObject: {fileID: 716419660}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.45819998, y: -0.27129996, z: 1.834}
+  m_LocalPosition: {x: 0.45819998, y: -0.27129996, z: 1.847}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17071,7 +17071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 1072054266}
-  totalEnemiesToKill: 5
+  totalEnemiesToKill: 20
   killCounterText: {fileID: 296451026}
 --- !u!4 &2097579369
 Transform:

@@ -156,14 +156,28 @@ public class PlayerMove : MonoBehaviour
         {
             activeGun.ConsumeAmmo();
 
-            Instantiate(activeGun.bullet, firePoint.position, firePoint.rotation);
+            RaycastHit hit;
+            Vector3 targetPoint;
+
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 200f))
+            {
+                targetPoint = hit.point;
+            }
+            else
+            {
+                targetPoint = cameraTransform.position + cameraTransform.forward * 100f;
+            }
+
+            Vector3 shootDirection = (targetPoint - firePoint.position).normalized;
+            Quaternion bulletRotation = Quaternion.LookRotation(shootDirection);
+            Instantiate(activeGun.bullet, firePoint.position, bulletRotation);
 
             activeGun.fireCounter = activeGun.fireRate;
 
             StartCoroutine(WaitAndSetActiveFalse());
         }
-
     }
+
 
     IEnumerator WaitAndSetActiveFalse()
     {

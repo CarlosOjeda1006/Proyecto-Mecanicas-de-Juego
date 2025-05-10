@@ -2,39 +2,41 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float bulletSpeed, lifeTime;
+    public float bulletSpeed = 20f;
+    public float lifeTime = 5f;
     public Rigidbody theRigidbody;
 
-    public int damage;
+    public int damage = 10;
 
-    public bool damageEnemy, damagePlayer;
+    public bool damageEnemy = true;
+    public bool damagePlayer = false;
+
     void Start()
     {
-        
-    }
-    void Update()
-    {
         theRigidbody.linearVelocity = transform.forward * bulletSpeed;
-
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0)
-        {
-            Destroy(gameObject);
-        }
+        Invoke("DestroySelf", lifeTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy" && damageEnemy)
+        if (other.CompareTag("Enemy") && damageEnemy)
         {
-            other.gameObject.GetComponent<EnemyHealth>().DamageEnemy(damage);
+            EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+            if (enemy != null) enemy.DamageEnemy(damage);
         }
 
-        if(other.gameObject.tag == "Player" && damagePlayer) 
+        if (other.CompareTag("Player") && damagePlayer)
         {
-            PlayerHealth.instance.DamagePlayer(damage);
+            if (PlayerHealth.instance != null)
+                PlayerHealth.instance.DamagePlayer(damage);
         }
 
         Destroy(gameObject);
     }
+
+    void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 }
+
