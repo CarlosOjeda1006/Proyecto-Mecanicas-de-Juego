@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class EnemyProgressManager : MonoBehaviour
 {
@@ -30,15 +32,18 @@ public class EnemyProgressManager : MonoBehaviour
         killCounterText.text = enemiesKilled + " / " + totalEnemiesToKill;
         if (enemiesKilled >= totalEnemiesToKill)
         {
-            Debug.Log("¡Has ganado la partida!");
             WinGame();
         }
     }
 
     void WinGame()
     {
-        Debug.Log("Siguiente nivel");
-        GameManager.instance.PlayerDeath();
+        Debug.Log("¡Nivel completado! Cargando siguiente nivel...");
+
+        Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("Nivel2");
     }
+    
+
+
 }
 
