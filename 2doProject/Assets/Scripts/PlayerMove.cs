@@ -35,6 +35,16 @@ public class PlayerMove : MonoBehaviour
     public float leanSpeed = 5f;
     private float currentLean = 0f;
 
+    private Vector2 recoilRotation = Vector2.zero;
+    private Vector2 currentRecoil = Vector2.zero;
+
+    public float recoilReturnSpeed = 5f;
+    public float recoilApplySpeed = 15f;
+
+    private float verticalLookRotation = 0f;
+    public float minLookAngle = -60f;
+    public float maxLookAngle = 60f;
+
     private void Awake()
     {
         instance = this;
@@ -60,17 +70,9 @@ public class PlayerMove : MonoBehaviour
             moveInput = horizontalMove + verticalMove;
             moveInput.Normalize();
 
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                moveInput = moveInput * sprintSpeed;
-            }
-            else
-            {
-                moveInput = moveInput * moveSpeed;
-            }
+            moveInput *= Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
 
             moveInput.y = yVelocity;
-
             moveInput.y += Physics.gravity.y * gravityForce * Time.deltaTime;
 
             if (characterController.isGrounded)
@@ -102,52 +104,47 @@ public class PlayerMove : MonoBehaviour
                 currentLean = Mathf.Lerp(currentLean, 0f, Time.deltaTime * leanSpeed);
             }
 
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + mouseInput.x, currentLean);
-            cameraTransform.rotation = Quaternion.Euler(cameraTransform.rotation.eulerAngles + new Vector3(-mouseInput.y, 0f, 0f));
+            transform.Rotate(Vector3.up * mouseInput.x);
+
+            recoilRotation = Vector2.Lerp(recoilRotation, Vector2.zero, recoilReturnSpeed * Time.deltaTime);
+            currentRecoil = Vector2.Lerp(currentRecoil, recoilRotation, recoilApplySpeed * Time.deltaTime);
+
+            verticalLookRotation += -mouseInput.y - currentRecoil.x;
+            verticalLookRotation = Mathf.Clamp(verticalLookRotation, minLookAngle, maxLookAngle);
+
+            cameraTransform.localRotation = Quaternion.Euler(verticalLookRotation, 0f, currentLean);
 
             if (Input.GetMouseButtonDown(0) && activeGun.fireCounter <= 0)
             {
-                RaycastHit hit;
-
-                if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 200f))
-                {
-                    firePoint.LookAt(hit.point);
-                }
-                else
-                {
-                    firePoint.LookAt(cameraTransform.position + (cameraTransform.forward * 40f));
-                }
-
-                FireShot();
+                AimAndShoot();
             }
 
-            if (Input.GetMouseButton(0) && activeGun.canAutoFire)
+            if (Input.GetMouseButton(0) && activeGun.canAutoFire && activeGun.fireCounter <= 0)
             {
-                if (activeGun.fireCounter <= 0)
-                {
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 200f))
-                    {
-                        firePoint.LookAt(hit.point);
-                    }
-                    else
-                    {
-                        firePoint.LookAt(cameraTransform.position + (cameraTransform.forward * 40f));
-                    }
-
-                    FireShot();
-                }
+                AimAndShoot();
             }
-
-            //if (Input.GetKeyDown(KeyCode.R))
-            //{
-            //    SwitchGun();
-            //}
 
             animator.SetFloat("moveSpeed", moveInput.magnitude);
             animator.SetBool("onGround", canJump);
         }
+    }
+
+    private void AimAndShoot()
+    {
+        RaycastHit hit;
+        Vector3 targetPoint;
+
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 200f))
+        {
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = cameraTransform.position + (cameraTransform.forward * 100f);
+        }
+
+        firePoint.LookAt(targetPoint);
+        FireShot();
     }
 
     public void FireShot()
@@ -156,21 +153,12 @@ public class PlayerMove : MonoBehaviour
         {
             activeGun.ConsumeAmmo();
 
-            RaycastHit hit;
-            Vector3 targetPoint;
-
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 200f))
-            {
-                targetPoint = hit.point;
-            }
-            else
-            {
-                targetPoint = cameraTransform.position + cameraTransform.forward * 100f;
-            }
-
-            Vector3 shootDirection = (targetPoint - firePoint.position).normalized;
+            Vector3 shootDirection = (firePoint.forward).normalized;
             Quaternion bulletRotation = Quaternion.LookRotation(shootDirection);
             Instantiate(activeGun.bullet, firePoint.position, bulletRotation);
+
+            CameraShake.instance.Shake(0.1f, 0.1f);
+            ApplyRecoil(0.01f, 0.03f);
 
             activeGun.fireCounter = activeGun.fireRate;
 
@@ -178,13 +166,10 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-
     IEnumerator WaitAndSetActiveFalse()
     {
         muzzleFlah.SetActive(true);
-
         yield return new WaitForSeconds(0.05f);
-
         muzzleFlah.SetActive(false);
     }
 
@@ -193,7 +178,6 @@ public class PlayerMove : MonoBehaviour
         activeGun.gameObject.SetActive(false);
 
         currentGun++;
-
         if (currentGun >= allGuns.Count)
         {
             currentGun = 0;
@@ -204,5 +188,11 @@ public class PlayerMove : MonoBehaviour
 
         UI.instance.ammunitionText.text = "" + activeGun.currentAmmunition;
     }
+
+    public void ApplyRecoil(float vertical, float horizontal)
+    {
+        recoilRotation += new Vector2(vertical, Random.Range(-horizontal, horizontal));
+    }
 }
+
 
