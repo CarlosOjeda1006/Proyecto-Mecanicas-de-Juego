@@ -70,5 +70,16 @@ public class Gun : MonoBehaviour
             Debug.Log("Munición recuperada! Temporizador cancelado.");
         }
     }
+
+    public bool IsOutOfAmmo()
+    {
+        return isOutOfAmmo;
+    }
+
+    public float GetRemainingTimer()
+    {
+        return Mathf.Clamp(outOfAmmoTimer, 0f, outOfAmmoTimerDuration);
+    }
+
 }
 

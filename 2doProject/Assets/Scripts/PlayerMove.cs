@@ -140,10 +140,10 @@ public class PlayerMove : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SwitchGun();
-            }
+            //if (Input.GetKeyDown(KeyCode.R))
+            //{
+            //    SwitchGun();
+            //}
 
             animator.SetFloat("moveSpeed", moveInput.magnitude);
             animator.SetBool("onGround", canJump);
