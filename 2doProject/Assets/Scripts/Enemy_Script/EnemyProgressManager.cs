@@ -38,9 +38,9 @@ public class EnemyProgressManager : MonoBehaviour
 
     void WinGame()
     {
-        Debug.Log("¡Nivel completado! Cargando siguiente nivel...");
+        Debug.Log("ï¿½Nivel completado! Cargando siguiente nivel...");
 
-        Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("Nivel2");
+        Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("Nivel_2");
     }
     
 

@@ -6,38 +6,39 @@ using UnityEngine.SceneManagement;
 public class DefendZoneManager : MonoBehaviour
 {
     public Slider invasionSlider;
-    public Text timerText;           // Texto para mostrar el tiempo transcurrido
     public int maxEnemiesInZone = 5;
-    public float timeToWin = 60f;    // Tiempo que debes defender para ganar (en segundos)
+
+    public float timeToWin = 60f; // Tiempo para ganar en segundos
+    private float timer;
+    public Text timerText; // Texto UI para mostrar el tiempo restante
+
+    private bool gameEnded = false;
 
     private List<GameObject> enemiesInZone = new List<GameObject>();
-    private float timer = 0f;
-    private bool hasWon = false;
 
     private void Start()
     {
         invasionSlider.maxValue = maxEnemiesInZone;
         invasionSlider.value = 0;
-        UpdateTimerUI();
+
+        timer = timeToWin;
+        if (timerText != null)
+            timerText.text = Mathf.CeilToInt(timer).ToString();
     }
 
     private void Update()
     {
-        // Limpiar lista de enemigos nulos
-        enemiesInZone.RemoveAll(enemy => enemy == null);
+        if (gameEnded) return;
 
-        // Actualizar barra de invasión
+        enemiesInZone.RemoveAll(enemy => enemy == null);
         UpdateUI();
 
-        // Si perdiste, no seguir contando el tiempo
-        if (hasWon) return;
+        // Temporizador de victoria
+        timer -= Time.deltaTime;
+        if (timerText != null)
+            timerText.text = Mathf.CeilToInt(timer).ToString();
 
-        // Incrementar temporizador
-        timer += Time.deltaTime;
-        UpdateTimerUI();
-
-        // Revisar si ganaste
-        if (timer >= timeToWin)
+        if (timer <= 0f)
         {
             WinGame();
         }
@@ -62,32 +63,26 @@ public class DefendZoneManager : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         invasionSlider.value = enemiesInZone.Count;
     }
 
-    void UpdateTimerUI()
-    {
-        int minutes = Mathf.FloorToInt(timer / 60f);
-        int seconds = Mathf.FloorToInt(timer % 60f);
-        timerText.text = $"Tiempo: {minutes:00}:{seconds:00}";
-    }
-
-    void CheckLoseCondition()
+    private void CheckLoseCondition()
     {
         if (enemiesInZone.Count >= maxEnemiesInZone)
         {
+            gameEnded = true;
             Debug.Log("¡Has perdido! La zona fue invadida.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reinicia la escena
         }
     }
 
-    void WinGame()
+    private void WinGame()
     {
-        hasWon = true;
-        Debug.Log("¡Has ganado! Has defendido la zona el tiempo necesario.");
-        // Aquí puedes cargar una escena de victoria o mostrar un UI de ganar
-        // Ejemplo: SceneManager.LoadScene("WinScene");
+        gameEnded = true;
+        Debug.Log("¡Has ganado! Defendiste la zona con éxito.");
+        // Aquí puedes cargar otra escena o mostrar una pantalla de victoria
+        // Por ejemplo: SceneManager.LoadScene("WinScene");
     }
 }

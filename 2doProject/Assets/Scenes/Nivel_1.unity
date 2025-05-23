@@ -2104,7 +2104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.924}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 871.26733, y: 351.34753}
+  m_AnchoredPosition: {x: 802.81726, y: 392.34753}
   m_SizeDelta: {x: 164.2922, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &296451026
@@ -4129,7 +4129,7 @@ GameObject:
   - component: {fileID: 607360616}
   - component: {fileID: 607360618}
   m_Layer: 5
-  m_Name: Pause_In_Game
+  m_Name: Pause_IG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5863,7 +5863,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 89.693}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 873.45, y: 0}
+  m_AnchoredPosition: {x: 805, y: 41}
   m_SizeDelta: {x: 623.4248, y: 77.9281}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1072054266
@@ -6137,7 +6137,7 @@ GameObject:
   - component: {fileID: 1130597948}
   - component: {fileID: 1130597947}
   m_Layer: 5
-  m_Name: Return Menu
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10631,7 +10631,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Return Menu
+  m_text: 'Menu
 
 '
   m_isRightToLeft: 0
