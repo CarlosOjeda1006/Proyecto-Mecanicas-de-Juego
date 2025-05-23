@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public AudioSource bulletAudio;
     public float bulletSpeed = 20f;
     public float lifeTime = 5f;
     public Rigidbody theRigidbody;
@@ -13,6 +14,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
+        bulletAudio.Play();
         theRigidbody.linearVelocity = transform.forward * bulletSpeed;
         Invoke("DestroySelf", lifeTime);
     }

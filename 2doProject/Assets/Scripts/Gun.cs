@@ -34,7 +34,7 @@ public class Gun : MonoBehaviour
 
             if (outOfAmmoTimer <= 0)
             {
-                Debug.Log("¡Sin munición y se acabó el tiempo! El jugador ha muerto.");
+                Debug.Log("ï¿½Sin municiï¿½n y se acabï¿½ el tiempo! El jugador ha muerto.");
 
                 playerObj.SetActive(false);
 
@@ -48,12 +48,13 @@ public class Gun : MonoBehaviour
         currentAmmunition--;
 
         UI.instance.ammunitionText.text = "" + currentAmmunition;
+        
 
         if (currentAmmunition <= 0 && !isOutOfAmmo)
         {
             isOutOfAmmo = true;
             outOfAmmoTimer = outOfAmmoTimerDuration;
-            Debug.Log("Sin munición! Tienes " + outOfAmmoTimerDuration + " segundos para conseguir munición.");
+            Debug.Log("Sin municiï¿½n! Tienes " + outOfAmmoTimerDuration + " segundos para conseguir municiï¿½n.");
         }
     }
 
@@ -67,7 +68,7 @@ public class Gun : MonoBehaviour
         {
             isOutOfAmmo = false;
             outOfAmmoTimer = -1f;
-            Debug.Log("Munición recuperada! Temporizador cancelado.");
+            Debug.Log("Municiï¿½n recuperada! Temporizador cancelado.");
         }
     }
 
