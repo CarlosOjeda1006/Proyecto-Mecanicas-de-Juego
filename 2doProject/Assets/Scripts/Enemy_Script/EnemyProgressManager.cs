@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class EnemyProgressManager : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class EnemyProgressManager : MonoBehaviour
     private int enemiesKilled = 0;
 
     public TextMeshProUGUI killCounterText;
+
     private void Awake()
     {
         instance = this;
@@ -30,20 +30,27 @@ public class EnemyProgressManager : MonoBehaviour
         enemiesKilled++;
         progressBar.value = enemiesKilled;
         killCounterText.text = enemiesKilled + " / " + totalEnemiesToKill;
-        if (enemiesKilled >= totalEnemiesToKill)
+
+        // Solo ganar por kills si estás en Nivel_1
+        if (enemiesKilled >= totalEnemiesToKill && SceneManager.GetActiveScene().name == "Nivel_1")
         {
             WinGame();
         }
     }
 
-    void WinGame()
+    public void WinGame()
     {
-        Debug.Log("�Nivel completado! Cargando siguiente nivel...");
+        string currentScene = SceneManager.GetActiveScene().name;
 
-        Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("Nivel_2");
+        if (currentScene == "Nivel_2")
+        {
+            Debug.Log("¡Juego completado! Regresando al menú final...");
+            Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("MenuVictoria");
+        }
+        else
+        {
+            Debug.Log("¡Nivel completado! Cargando siguiente nivel...");
+            Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("Nivel_2");
+        }
     }
-    
-
-
 }
-

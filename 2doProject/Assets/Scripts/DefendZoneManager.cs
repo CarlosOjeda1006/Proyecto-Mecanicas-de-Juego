@@ -10,7 +10,7 @@ public class DefendZoneManager : MonoBehaviour
 
     public float timeToWin = 60f; // Tiempo para ganar en segundos
     private float timer;
-    public Text timerText; // Texto UI para mostrar el tiempo restante
+    public Text timerText;
 
     private bool gameEnded = false;
 
@@ -22,8 +22,7 @@ public class DefendZoneManager : MonoBehaviour
         invasionSlider.value = 0;
 
         timer = timeToWin;
-        if (timerText != null)
-            timerText.text = Mathf.CeilToInt(timer).ToString();
+        UpdateTimerText();
     }
 
     private void Update()
@@ -35,8 +34,7 @@ public class DefendZoneManager : MonoBehaviour
 
         // Temporizador de victoria
         timer -= Time.deltaTime;
-        if (timerText != null)
-            timerText.text = Mathf.CeilToInt(timer).ToString();
+        UpdateTimerText();
 
         if (timer <= 0f)
         {
@@ -70,11 +68,13 @@ public class DefendZoneManager : MonoBehaviour
 
     private void CheckLoseCondition()
     {
+        if (gameEnded) return;
+
         if (enemiesInZone.Count >= maxEnemiesInZone)
         {
             gameEnded = true;
             Debug.Log("¡Has perdido! La zona fue invadida.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reinicia la escena
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
@@ -82,7 +82,17 @@ public class DefendZoneManager : MonoBehaviour
     {
         gameEnded = true;
         Debug.Log("¡Has ganado! Defendiste la zona con éxito.");
-        // Aquí puedes cargar otra escena o mostrar una pantalla de victoria
-        // Por ejemplo: SceneManager.LoadScene("WinScene");
+        // Llama a la victoria global
+        EnemyProgressManager.instance?.WinGame();
+    }
+
+    private void UpdateTimerText()
+    {
+        if (timerText != null)
+        {
+            int minutes = Mathf.FloorToInt(timer / 60f);
+            int seconds = Mathf.FloorToInt(timer % 60f);
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
     }
 }
