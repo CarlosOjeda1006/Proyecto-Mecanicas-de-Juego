@@ -45,7 +45,7 @@ public class EnemyProgressManager : MonoBehaviour
         if (currentScene == "Nivel_2")
         {
             Debug.Log("¡Juego completado! Regresando al menú final...");
-            Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("MenuVictoria");
+            Object.FindFirstObjectByType<SceneFader>().FadeAndLoadScene("MainMenu");
         }
         else
         {
