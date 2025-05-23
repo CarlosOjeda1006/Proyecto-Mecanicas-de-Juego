@@ -22,11 +22,12 @@ public class Pause : MonoBehaviour
         GameManager.instance.PauseUnpause();
     }
 
-    public void QuitGame()
+    public void ReturnToMenu()
     {
-        Debug.Log("Cerrando juego...");
-        Application.Quit();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu"); // Reemplaza con el nombre correcto
     }
+
 
     public void Difficulty()
     {
