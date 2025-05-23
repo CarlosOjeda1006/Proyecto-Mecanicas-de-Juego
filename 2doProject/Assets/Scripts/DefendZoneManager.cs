@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class DefendZoneManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class DefendZoneManager : MonoBehaviour
 
     public float timeToWin = 60f; // Tiempo para ganar en segundos
     private float timer;
-    public Text timerText;
+    public TextMeshProUGUI timerText;
 
     private bool gameEnded = false;
 
